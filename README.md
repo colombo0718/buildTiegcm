@@ -44,5 +44,10 @@ select single system install
 and install into default directory (/opt/pgi)  
 Install every package, especially MPICH.
 
-**取得 linence.dat**
+**取得 lincense.dat**  
+進入PGI官網，點擊 Download 的 Free Trial Software 子選項，  
+在文章中點選 generate 15 day PGI trial license key，  
+輸入網卡卡號後方可取得 licnese.dat 。  
+> 查看網卡卡號，於terminal中輸入`$ ifconfig`，  
+>`HWaddr`後的字串即為網卡卡號
 
