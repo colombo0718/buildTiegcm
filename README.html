@@ -1,0 +1,126 @@
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<h1>建立 TIEGCM 系統 SOP</h1>
+<h3>一、安裝 Ubuntu 作業系統</h3>
+<p><strong>在Windows電腦中製作USB啟動碟</strong><br>
+下載 Ubuntu 64-bit 安裝檔 <br>
+<code>http://www.ubuntu.com/download/desktop</code><br>
+下載並安裝 win32DiscImager<br>
+<code>http://sourceforge.net/projects/win32diskimager/</code><br>
+以 win32DiscImager 將 Ubuntu 安裝檔寫入USB, <br>
+做成啟動碟。</p>
+<p><strong>以USB開機進入安裝流程</strong>   
+</p>
+<ul>
+<li>Step1. welcome [Install Ubuntu]   
+</li>
+<li>Step2. Prepare to Install Ubuntu [Continue]  
+</li>
+<li>Step3. Install type [somthing else]<br>
+<code>1TB--500G-&gt; use as 'swap area'</code><br>
+<code>...\-500G-&gt; use as 'Ext4', mount point:'/'</code><br>
+<code>2TB --&gt; use as 'Ext4', mount point:'/home'</code>   
+</li>
+<li>Step4. where are you ? [Taipei]</li>
+<li>Step5. Keyboard layout [Continue]</li>
+<li>Step6. <br>
+<code>Your name : suproject01</code>  <br>
+<code>Your computer's name : project01</code><br>
+<code>Pick a user name : suproject01</code><br>
+<code>Choose a passward : ********</code></li>
+</ul>
+<h3>二、安裝 PGI Fortran comiler</h3>
+<p><strong>下載與安裝</strong><br>
+登入或申請PGI官方網站帳號 <br>
+<code>http://www.pgroup.com</code><br>
+點選 [download] 進入下載選單:  
+</p>
+<blockquote>
+<p><code>Product : PGI Fortran server</code><br>
+<code>Target : 64-bit only</code><br>
+<code>Platform : Linux</code><br>
+<code>Package : full</code>  
+</p>
+</blockquote>
+<p>Ubuntu中 網路上下載的檔案自動放入路徑<br>
+<code>/home/$USer/Downloads</code><br>
+於視窗環境將檔案解壓縮後，以terminal進入安裝檔<br>
+輸入指令<code>$ sudo ./instll</code> 即進行安裝 <br>
+遇長篇說明文件可按'q'跳過 <br>
+選擇 single system install<br>
+Install directory: /opt/pgi (預設)<br>
+所有周邊套件皆按'y'安裝，mpich尤為重要。</p>
+<p><strong>取得 lincense.dat</strong><br>
+進入PGI官網，點擊 Download 的 Free Trial Software 子選項，<br>
+在文章中點選 generate 15 day PGI trial license key，<br>
+輸入網卡卡號後方可取得 licnese.dat 。  
+</p>
+<blockquote>
+<p>查看網卡卡號，於terminal中輸入<code>$ ifconfig</code>，<br>
+<code>HWaddr</code>後的字串即為網卡卡號</p>
+</blockquote>
+<h3>三、安裝netcdf</h3>
+<p>從網路上下載netcdf-4.1.1版(版本限定)<br>
+安裝前須先完成以下指令：<br>
+<code>$ sudo apt-get update</code><br>
+<code>$ sudo apt-get upgrade</code><br>
+<code>$　sudo apt-get install g++</code><br>
+於視窗環境將檔案解壓縮後，以terminal進入安裝檔，<br>
+輸入以下指令進行安裝:<br>
+<code>$ ./configure</code><br>
+<code>$ make check</code><br>
+<code>$ sudo make install</code><br>
+預設安裝路徑為<code>/usr/local/</code></p>
+<h3>四、設定環境與安裝TIEGCM</h3>
+<p><strong>安裝周邊套件</strong><br>
+輸入下列指令以預先安裝周邊套件：<br>
+<code>$ sudo apt-get install csh</code><br>
+<code>$ sudo apt-get install vim</code><br>
+<code>$ sudo apt-get install libhdf5-serial-dev</code><br>
+<code>$ sudo apt-get install svnversion</code></p>
+<p><strong>設定$PATH路徑變數</strong><br>
+以管理者權限編輯<code>/etc/bash.bashrc</code><br>
+<code>$ sudo vi bash.bashrc</code><br>
+於檔案最末端加入以下設定：<br>
+<code>PATH=/opt/pgi/linux86-64/15.7/bin</code><br>
+將路徑指向 pgi fortran 執行檔，<br>
+變數名稱 PATH 必須為大寫。</p>
+<p><strong>安裝TIEGCM</strong><br>
+於TIEGCM官網下載主程式，<br>
+視窗環境解壓縮後 terminal 進入安裝檔<br>
+修改下列兩份檔案:<br>
+1.修改tiegcm-linux.job</p>
+<blockquote>
+<p><code>$ vi script/tiegcm-linux.job</code> <br>
+<code>set modeldir=安裝檔路徑</code><br>
+<code>set make =Make.pgi_hao64</code><br>
+將所有'gmake'改為'make'</p>
+</blockquote>
+<p>2.修改Make.pgi_hao64  
+</p>
+<blockquote>
+<p><code>$ vi script/Make.pgi_hao64</code><br>
+<code>F90=pgi compiler 路徑/pgf90</code><br>
+<code>MPIF90=pgi MPI 路徑/mpif90</code><br>
+<code>MPIRUN=pgi MPI 路徑/mpirun</code><br>
+<code>LIBS=移除 -lsz</code><br>
+<code>LIB_NETCDF=netcdf路徑/lib</code><br>
+<code>INC_NETCDF=netcdf路徑/include</code>  
+</p>
+</blockquote>
+<p>修改完畢執行 tiegcm-linux.job <br>
+<code>$ ./tiegcm-linux.job</code><br>
+到此TIEGCM安裝完成!!!</p>
+<h3>五、安裝繪圖軟體</h3>
+<p><strong>下載並安裝 octave</strong><br>
+此軟體為免費版 matlab，語法完全相同<br>
+<code>$ sudo apt-get install octave</code></p>
+<p><strong>光碟安裝IDL</strong><br>
+進入光碟路徑 <code>/media/$USER/光碟名稱</code><br>
+輸入指令 <code>$ sudo ./install-unix.sh</code> 即開始安裝<br>
+安裝路徑為 <code>/usr/local/exelis</code>  
+</p>
+<p>註：電腦室給的license設定變數<code>LM_LICENSE_PILE</code><br>
+與 pgi fortran compiler 衝突，<br>
+欲重新 complie TIEGCM 時須注意。</p>
