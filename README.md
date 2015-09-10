@@ -86,7 +86,7 @@ Install directory: /opt/pgi (預設)
 1.修改tiegcm-linux.job
 > `$ vi script/tiegcm-linux.job`   
 > `set modeldir=安裝檔路徑`  
-> `set make =Make.pgi_hao64`  
+> `set make=Make.pgi_hao64` 或 `=Make.intel_hao64`  
 > 將所有'gmake'改為'make'
 
 2.修改Make.pgi_hao64  
@@ -105,7 +105,8 @@ Install directory: /opt/pgi (預設)
 ### 五、安裝繪圖軟體
 **下載並安裝 octave**  
 此軟體為免費版 matlab，語法完全相同  
-`$ sudo apt-get install octave`
+`$ sudo apt-get install octave`  
+`$ sudo apt-get install octave-octcdf`
 
 **光碟安裝IDL**  
 進入光碟路徑 `/media/$USER/光碟名稱`  
@@ -115,4 +116,8 @@ Install directory: /opt/pgi (預設)
 註：電腦室給的license設定變數`LM_LICENSE_PILE`  
 與 pgi fortran compiler 衝突，  
 欲重新 complie TIEGCM 時須注意。
+
+### 六、系統測試  
+
+
 
