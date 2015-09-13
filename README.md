@@ -118,6 +118,19 @@ Install directory: /opt/pgi (預設)
 欲重新 complie TIEGCM 時須注意。
 
 ### 六、系統測試  
+**windows 連線環境設定**  
+下載putty及Xming並執行  
+在putty的x11中寫入localhost:0，便可用圖形界面。  
+  
+**進行兩分鐘模擬並測試**  
+準備好所有需要的輸入檔，並進行一個吃time step的模擬  
+octave在調用netcdf資料時語法跟matlab不同，說明於：    
+`http://modb.oce.ulg.ac.be/mediawiki/index.php/Octcdf`  
+範例testplot.m  
+> `nc=netccdf('advanced.nc','r');`  
+> `ne=reshape(nc{'NE'}(1,35,:,:),72.144);`      
+> `pcolor(ne);shading interp;`  
 
-
-
+IDL 須先進入IDL_tiegcm_plot路徑  
+再執行IDL，輸入tgcmproc進入繪圖
+  
